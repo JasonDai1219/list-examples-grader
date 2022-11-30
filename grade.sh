@@ -1,4 +1,4 @@
- rm -rf student-submission
+rm -rf student-submission
 git clone $1 student-submission
 cd student-submission
 if [ -e "ListExamples.java" ]
