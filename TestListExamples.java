@@ -40,16 +40,6 @@ public class TestListExamples {
     expected.add("a");
     expected.add("A");
     expected.add("AAAAA");
-  @Test
-  public void testAoracontainer() {
-    List<String> test = Arrays.asList("a", "AAAAA", "");
-    List<String> result = new ArrayList<>();
-    for (String i: test) {
-      if(this.checkString(i) == true) {
-          result.add(i);
-      }
-    }
-    List<String> expected = Arrays.asList("a", "a", "b", "c", "d");
     assertEquals(expected, result);
   }
 }
