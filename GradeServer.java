@@ -1,33 +1,46 @@
-import java.util.stream.Stream;
-import java.util.Arrays;
-import java.io.IOException;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 class ExecHelpers {
-  static String streamToString(InputStream out) {
-    Stream<String> lines = new BufferedReader(new InputStreamReader(out)).lines();
+
+  /**
+    Takes an input stream, reads the full stream, and returns the result as a
+    string.
+
+    In Java 9 and later, new String(out.readAllBytes()) would be a better
+    option, but using Java 8 for compatibility with ieng6.
+  */
+  static String streamToString(InputStream out) throws IOException {
     String result = "";
-    for(Object o: lines.toArray()) {
-      result += (String)o + "\n";
+    while(true) {
+      int c = out.read();
+      if(c == -1) { break; }
+      result += (char)c;
+      System.out.println(System.currentTimeMillis() + "; just read: " + (char)c);
     }
     return result;
   }
+
+  /**
+    Takes a command, represented as an array of strings as it would by typed at
+    the command line, runs it, and returns its combined stdout and stderr as a
+    string.
+  */
   static String exec(String[] cmd) throws IOException {
-    Process p = new ProcessBuilder().command(Arrays.asList(cmd)).redirectErrorStream(true).start();
+    Process p = new ProcessBuilder()
+                    .command(Arrays.asList(cmd))
+                    .redirectErrorStream(true)
+                    .start();
     InputStream out = p.getInputStream();
-//    InputStream err = p.getErrorStream();
     return String.format("%s\n", streamToString(out));
   }
+
 }
 
 class Handler implements URLHandler {
