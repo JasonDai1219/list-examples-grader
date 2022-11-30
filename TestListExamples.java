@@ -5,20 +5,10 @@ import java.util.List;
 
 import org.junit.*;
 
-class VowelChecker implements StringChecker {
+class AChecker implements StringChecker {
   public boolean checkString(String s) {
-    ArrayList<String> storing = new ArrayList<>();
-    storing.add("a");
-    storing.add("A");
-    storing.add("e");
-    storing.add("E");
-    storing.add("i");
-    storing.add("I");
-    storing.add("o");
-    storing.add("O");
-    storing.add("u");
-    storing.add("U");
-    if(storing.contains(s)) {
+
+    if(s.contains("A") || s.contains("a")) {
       return true;
     }
     else {
@@ -34,9 +24,14 @@ public class TestListExamples {
     testing.add("a");
     testing.add("b");
     testing.add("c");
-    VowelChecker sc = new VowelChecker();
+    testing.add("A");
+    testing.add("AAAAA");
+    AChecker sc = new AChecker();
     List<String> result = ListExamples.filter(testing, sc);
     List<String> expected = new ArrayList<>();
+    expected.add("a");
+    expected.add("A");
+    expected.add("AAAAA");
     assertEquals(expected, result);
   }
 }
